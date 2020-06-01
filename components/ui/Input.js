@@ -39,11 +39,15 @@ const Input = props => {
 
     const textChangeHandler = text => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
         let isValid = true;
         if (props.required && text.trim().length === 0) {
         isValid = false;
         }
         if (props.email && !emailRegex.test(text.toLowerCase())) {
+        isValid = false;
+        }
+        if(props.postalCode && !postalCodeRegex.test(text.toLowerCase())){
         isValid = false;
         }
         if (props.min != null && +text < props.min) {
@@ -73,7 +77,7 @@ const Input = props => {
             onChangeText={textChangeHandler}
             onBlur={lostFocusHandler}
         />
-        {!inputState.isValid && <Text>{props.errorText}</Text>}
+        {!inputState.isValid && <Text style={styles.validText}>{props.errorText}</Text>}
     </View>
     )
 
@@ -92,6 +96,9 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderBottomColor: '#ccc',
         borderBottomWidth: 1
+    },
+    validText:{
+        color: 'red'
     }
 });
 
